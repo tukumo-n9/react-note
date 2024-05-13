@@ -1,8 +1,24 @@
-import React, { useEffect } from "react";
 import { v4 as uuid } from "uuid";
-import "./Sidebar.css";
 
-function Sidebar({ notes, setNotes, setSelectedNoteId }) {
+type Props = {
+  notes: {
+    id: string;
+    title: string;
+    content: string;
+    date: number;
+  }[];
+  setNotes: (
+    notes: {
+      id: string;
+      title: string;
+      content: string;
+      date: number;
+    }[]
+  ) => void;
+  setSelectedNoteId: (id: string) => void;
+};
+
+function Sidebar({ notes, setNotes, setSelectedNoteId }: Props) {
   const onAddNote = () => {
     setNotes([
       ...notes,
@@ -15,29 +31,17 @@ function Sidebar({ notes, setNotes, setSelectedNoteId }) {
     ]);
   };
 
-  const onDeleteNote = (id) => {
+  const onDeleteNote = (id: string) => {
     const newNotes = notes.filter((note) => note.id !== id);
     setNotes(newNotes);
   };
-
-  useEffect(() => {
-    console.log(notes);
-  }, [notes]);
-
-  // useEffect(() => {
-  //   console.log(notes);
-  // }, [notes]);
-
-  // useEffect(() => {
-  //   console.log(selectedNoteId);
-  // });
 
   const sortedNotes = notes.sort((a, b) => {
     return b.date - a.date;
   });
 
   return (
-    <div className="sidebar">
+    <div className="basis-1/5">
       <h1>ノート</h1>
       <button type="button" onClick={onAddNote}>
         追加

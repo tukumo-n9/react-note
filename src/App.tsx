@@ -1,14 +1,24 @@
 import { useEffect, useState } from "react";
-import "./App.css";
 import Main from "./components/Main";
 import Sidebar from "./components/Sidebar";
 
 function App() {
-  const [notes, setNotes] = useState(
-    JSON.parse(localStorage.getItem("notes")) || []
+  type Note = {
+    id: string;
+    title: string;
+    content: string;
+    date: number;
+  };
+
+  type Notes = Note[] | [];
+
+  type GetSelectedNote = () => Note | undefined;
+
+  const [notes, setNotes] = useState<Notes>(
+    JSON.parse(localStorage.getItem("notes") ?? "[]")
   );
-  const [selectedNoteId, setSelectedNoteId] = useState("");
-  const getSelectedNote = () => {
+  const [selectedNoteId, setSelectedNoteId] = useState<string>("");
+  const getSelectedNote: GetSelectedNote = (): Note | undefined => {
     return notes.find((note) => note.id === selectedNoteId);
   };
   useEffect(() => {
@@ -20,11 +30,10 @@ function App() {
     }
   }, []);
   return (
-    <>
+    <div className="container flex">
       <Sidebar
         notes={notes}
         setNotes={setNotes}
-        selectedNoteId={selectedNoteId}
         setSelectedNoteId={setSelectedNoteId}
       />
       <Main
@@ -32,7 +41,7 @@ function App() {
         notes={notes}
         setNotes={setNotes}
       />
-    </>
+    </div>
   );
 }
 

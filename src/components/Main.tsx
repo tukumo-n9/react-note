@@ -1,9 +1,35 @@
-import React from "react";
-import "./Main.css";
 import Markdown from "react-markdown";
 
-function Main({ selectedNote, notes, setNotes }) {
-  const onEditNote = (key, value) => {
+type Props = {
+  selectedNote:
+    | {
+        id: string;
+        title: string;
+        content: string;
+        date: number;
+      }
+    | undefined;
+  notes: {
+    id: string;
+    title: string;
+    content: string;
+    date: number;
+  }[];
+  setNotes: (
+    notes: {
+      id: string;
+      title: string;
+      content: string;
+      date: number;
+    }[]
+  ) => void;
+};
+
+function Main({ selectedNote, notes, setNotes }: Props) {
+  const onEditNote = (key: string, value: string) => {
+    if (!selectedNote) {
+      return;
+    }
     const newNote = {
       ...selectedNote,
       [key]: value,
@@ -15,7 +41,7 @@ function Main({ selectedNote, notes, setNotes }) {
     setNotes(newNotes);
   };
   return (
-    <main className="main">
+    <main className="basis-4/5">
       {!selectedNote ? (
         <p>選択されていません</p>
       ) : (
